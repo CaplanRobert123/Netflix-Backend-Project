@@ -1,0 +1,12 @@
+Starting audit...
+[ERROR] C:\Users\capla\Desktop\Tema-POO-2020\.\src\command\Action.java:10:5: Class 'Action' looks like designed for extension (can be subclassed), but the method 'getActions' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Action' final or making the method 'getActions' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] C:\Users\capla\Desktop\Tema-POO-2020\.\src\command\Action.java:10:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\capla\Desktop\Tema-POO-2020\.\src\command\Action.java:10:45: Parameter input should be final. [FinalParameters]
+[ERROR] C:\Users\capla\Desktop\Tema-POO-2020\.\src\actor\Actor.java:10:5: Class 'Actor' looks like designed for extension (can be subclassed), but the method 'loadActors' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Actor' final or making the method 'loadActors' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] C:\Users\capla\Desktop\Tema-POO-2020\.\src\actor\Actor.java:10:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\capla\Desktop\Tema-POO-2020\.\src\actor\Actor.java:10:44: Parameter input should be final. [FinalParameters]
+[ERROR] C:\Users\capla\Desktop\Tema-POO-2020\.\src\main\Main.java:4:8: Unused import - actor.Actor. [UnusedImports]
+[ERROR] C:\Users\capla\Desktop\Tema-POO-2020\.\src\user\User.java:1: File does not end with a newline. [NewlineAtEndOfFile]
+[ERROR] C:\Users\capla\Desktop\Tema-POO-2020\.\src\user\User.java:3:8: Unused import - fileio.UserInputData. [UnusedImports]
+Audit done.
+Checkstyle ends with 9 errors.
