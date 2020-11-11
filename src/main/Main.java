@@ -1,5 +1,6 @@
 package main;
 
+import action.Action;
 import action.Command;
 import checker.Checkstyle;
 import checker.Checker;
@@ -8,6 +9,7 @@ import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
 import org.json.simple.JSONArray;
+import user.User;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,23 +74,17 @@ public final class Main {
         JSONArray arrayResult = new JSONArray();
 
         //TODO add here the entry point to your implementation
+        User user = new User();
+        Action action = new Action();
         Command command = new Command();
-//        for (int i = 0; i < action.getActions(input).size(); i++) {
-//            if(action.getActions(input).equals("command")) {
-//                do smth;
-//            }
-//        }
-//        else if (action.getActions(input) == recommandation) {
-//            for (int i = 0; i < action.getActions(input).size(); i++) {
-//                do smth;
-//            }
-//        }
-//        else if(action.getActions(input) == query) {
-//            for (int i = 0; i < action.getActions(input).size(); i++) {
-//                do smth;
-//            }
-//        }
-//        System.out.println(command.getActionsList(input));
+        arrayResult.add(0, fileWriter.writeFile(1,"",
+                command.doView(user.getUserList(input).get(0),
+                        action.getActionsList(input).get(0))));
+        action.doAction();
+
+//        fileWriter.writeFile(1,"", command.doView(user.getUserList(input).get(0), action.getActionsList(input).get(0)));
+//        command.doView(user.getUserList(input).get(0));
+
 
         fileWriter.closeJSON(arrayResult);
     }
