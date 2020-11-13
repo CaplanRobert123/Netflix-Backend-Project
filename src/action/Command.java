@@ -1,17 +1,14 @@
 package action;
 
 import common.Constants;
-import entertainment.Movie;
 import fileio.ActionInputData;
-import fileio.MovieInputData;
 import fileio.UserInputData;
-import fileio.Writer;
+import user.User;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 
 public class Command {
+    User user = new User();
 
     /**
      * Method that checks if the received action needs to do a command.
@@ -32,18 +29,50 @@ public class Command {
         };
     }
 
+
+    /**
+     * Implements the "view" command of an action.
+     */
     public String doView(UserInputData userInputData, ActionInputData actionInputData) {
         Map<String, Integer> map = userInputData.getHistory();
-        Integer nrOfViews = map.get(actionInputData.getTitle());
-//        if (map.containsKey(actionInputData.getTitle())) {
-//            nrOfViews = map.get(actionInputData.getTitle());
-//            nrOfViews++;
-//        }
-        nrOfViews++;
-        return nrOfViews.toString();
+        Integer nrOfViews;
+        if (user.checkIfViewed(userInputData, actionInputData)) {
+            nrOfViews = map.get(actionInputData.getTitle());
+            nrOfViews++;
+            return "success -> " + actionInputData.getTitle() + " was viewed with total views of " + nrOfViews;
+        }
+        else {
+            nrOfViews = 1;
+            map.put(actionInputData.getTitle(), nrOfViews);
+            return "success -> " + actionInputData.getTitle() + " was viewed with total views of " + nrOfViews;
+        }
     }
 
-    public void doFavorite() {
+    /**
+     * Implements the "favorite" command of an action.
+     */
+    public String doFavorite(UserInputData userInputData, ActionInputData actionInputData) {
+        if (user.checkIfViewed(userInputData, actionInputData)) {
+//            if (userInputData.getFavoriteMovies().contains(actionInputData.getTitle())) {
+            if(user.checkIfFavorite(userInputData, actionInputData)) {
+                return "error -> " + actionInputData.getTitle() + " is already in favourite list";
+            } else {
+                userInputData.getFavoriteMovies().add(actionInputData.getTitle());
+                return "success -> " + actionInputData.getTitle() + " was added as favourite";
+            }
+        }
+        return "error -> " + actionInputData.getTitle() + " is not seen";
+    }
 
+    /**
+     * Implements the "rating" command of an action.
+     */
+    public String doRating(UserInputData userInputData, ActionInputData actionInputData) {
+        if(user.checkIfAlreadyRated(actionInputData, userInputData)) {
+            user.getRatingList().put(actionInputData.getTitle(), actionInputData.getGrade());
+            return "success -> " + actionInputData.getTitle() + " was rated with " +
+                    actionInputData.getGrade() + " by " + actionInputData.getUsername();
+        }
+        return "error -> " + actionInputData.getTitle() + " is not seen";
     }
 }

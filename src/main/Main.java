@@ -77,14 +77,17 @@ public final class Main {
         User user = new User();
         Action action = new Action();
         Command command = new Command();
-        arrayResult.add(0, fileWriter.writeFile(1,"",
-                command.doView(user.getUserList(input).get(0),
-                        action.getActionsList(input).get(0))));
-        action.doAction();
-
-//        fileWriter.writeFile(1,"", command.doView(user.getUserList(input).get(0), action.getActionsList(input).get(0)));
-//        command.doView(user.getUserList(input).get(0));
-
+        for (int i = 0; i < action.getActionsList(input).size(); i++) {
+            if(command.checkCommand(action.getActionsList(input).get(i))) {
+                String nameOfUser = action.getActionsList(input).get(i).getUsername();
+                for (int j = 0; j < user.getUserList(input).size(); j++) {
+                    if(user.getUserList(input).get(j).getUsername().equals(nameOfUser)) {
+                        arrayResult.add(fileWriter.writeFile(action.getActionsList(input).get(i).getActionId(), "",
+                                action.doCommand(user.getUserList(input).get(j), action.getActionsList(input).get(i))));
+                    }
+                }
+            }
+        }
 
         fileWriter.closeJSON(arrayResult);
     }
