@@ -10,4 +10,6 @@ public class Actor {
     public List<ActorInputData> getActorsList(Input input) {
         return input.getActors();
     }
+
+//    public void
 }

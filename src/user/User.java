@@ -4,7 +4,6 @@ import fileio.ActionInputData;
 import fileio.Input;
 import fileio.UserInputData;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

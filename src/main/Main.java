@@ -5,6 +5,7 @@ import action.Command;
 import checker.Checkstyle;
 import checker.Checker;
 import common.Constants;
+import entertainment.Movie;
 import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -82,8 +84,9 @@ public final class Main {
                 String nameOfUser = action.getActionsList(input).get(i).getUsername();
                 for (int j = 0; j < user.getUserList(input).size(); j++) {
                     if(user.getUserList(input).get(j).getUsername().equals(nameOfUser)) {
-                        arrayResult.add(fileWriter.writeFile(action.getActionsList(input).get(i).getActionId(), "",
-                                action.doCommand(user.getUserList(input).get(j), action.getActionsList(input).get(i))));
+                        arrayResult.add(fileWriter.writeFile( action.getActionsList(input).get(i).getActionId(), "",
+                                action.doCommand( user.getUserList(input).get(j), action.getActionsList(input).get(i), input ) ) );
+//                        System.out.println(user.getUserList(input).get(j).getUsername() + " movie: " + action.getActionsList(input).get(i).getTitle() + " ratings:" + movie.getRatings() + " map : " + user.getRatingList());
                     }
                 }
             }

@@ -44,14 +44,23 @@ public final class Season {
         this.ratings = ratings;
     }
 
+//    @Override
+//    public String toString() {
+//        return "Episode{"
+//                + "currentSeason="
+//                + currentSeason
+//                + ", duration="
+//                + duration
+//                + '}';
+//    }
+
     @Override
     public String toString() {
-        return "Episode{"
-                + "currentSeason="
-                + currentSeason
-                + ", duration="
-                + duration
-                + '}';
+        return "Season{" +
+                "currentSeason=" + currentSeason +
+                ", duration=" + duration +
+                ", ratings=" + ratings +
+                '}';
     }
 }
 

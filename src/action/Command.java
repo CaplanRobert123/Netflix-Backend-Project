@@ -1,14 +1,22 @@
 package action;
 
 import common.Constants;
+import entertainment.Movie;
+import entertainment.Serial;
 import fileio.ActionInputData;
+import fileio.Input;
 import fileio.UserInputData;
 import user.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public class Command {
+public class Command{
     User user = new User();
+    List<Movie> movieList = new ArrayList<>();
+    List<Serial> serialList = new ArrayList<>();
 
     /**
      * Method that checks if the received action needs to do a command.
@@ -53,7 +61,6 @@ public class Command {
      */
     public String doFavorite(UserInputData userInputData, ActionInputData actionInputData) {
         if (user.checkIfViewed(userInputData, actionInputData)) {
-//            if (userInputData.getFavoriteMovies().contains(actionInputData.getTitle())) {
             if(user.checkIfFavorite(userInputData, actionInputData)) {
                 return "error -> " + actionInputData.getTitle() + " is already in favourite list";
             } else {
@@ -67,9 +74,53 @@ public class Command {
     /**
      * Implements the "rating" command of an action.
      */
-    public String doRating(UserInputData userInputData, ActionInputData actionInputData) {
+    public String doRating(UserInputData userInputData, ActionInputData actionInputData, Input input) {
         if(user.checkIfAlreadyRated(actionInputData, userInputData)) {
-            user.getRatingList().put(actionInputData.getTitle(), actionInputData.getGrade());
+            if(actionInputData.getSeasonNumber() != 0) {
+                int ok = 0;
+                int j = 0;
+                Serial serial = new Serial(actionInputData.getTitle());
+                for (int i = 0; i < serial.getSerialsList(input).size(); i++) {
+                    if(serial.getSerialsList(input).get(i).getTitle().equals(actionInputData.getTitle())) {
+                        serial.setNumberOfSeasons(serial.getSerialsList(input).get(i).getNumberSeason());
+                        serial.setSeasons(serial.getSerialsList(input).get(i).getSeasons());
+                    }
+                }
+                for (int i = 0; i < serialList.size(); i++) {
+                    if(serialList.get(i).getTitle().equals(serial.getTitle())) {
+                        ok = 1;
+                        j = i;
+                    }
+                }
+                if( ok != 1 ){
+                    serialList.add(serial);
+                    serialList.get(serialList.indexOf(serial)).getSeasons().
+                            get(actionInputData.getSeasonNumber()-1).getRatings().add(actionInputData.getGrade());
+                    System.out.println(serial.toString());
+                }
+                if(ok == 1) {
+                    serialList.get(j).getSeasons().
+                            get(actionInputData.getSeasonNumber() - 1).getRatings().add(actionInputData.getGrade());
+                    System.out.println(serial.toString());
+                }
+            }
+            else {
+                int ok = 0;
+                int j = 0;
+                Movie movie = new Movie(actionInputData.getTitle());
+                for (int i = 0; i < movieList.size(); i++) {
+                    if(movieList.get(i).getTitle().equals(movie.getTitle())) {
+                        ok = 1;
+                        j = i;
+                    }
+                }
+                if( ok != 1 ) {
+                    movieList.add(movie);
+                    movieList.get(movieList.indexOf(movie)).getRatings().add(actionInputData.getGrade());
+                }
+                if(ok == 1)
+                    movieList.get(j).getRatings().add(actionInputData.getGrade());
+            }
             return "success -> " + actionInputData.getTitle() + " was rated with " +
                     actionInputData.getGrade() + " by " + actionInputData.getUsername();
         }

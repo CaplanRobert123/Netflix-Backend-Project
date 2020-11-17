@@ -4,28 +4,22 @@ import common.Constants;
 import fileio.ActionInputData;
 import fileio.Input;
 import fileio.UserInputData;
-import user.User;
 
 import java.util.List;
 
 public class Action {
-    Command command = new Command();
-    Query query = new Query();
-    Recommendation recommendation = new Recommendation();
-    User user = new User();
+    private Command command = new Command();
+    private Query query = new Query();
+    private Recommendation recommendation = new Recommendation();
 
     public List<ActionInputData> getActionsList(Input input) {
         return input.getCommands();
     }
 
-    public void doAction() {
-
-    }
-
     /**
      * If the action type is a command, it checks what type of command it is and executes it
      */
-    public String doCommand(UserInputData userInputData, ActionInputData actionInputData) {
+    public String doCommand(UserInputData userInputData, ActionInputData actionInputData, Input input) {
         if (command.checkCommand(actionInputData)) {
             if (command.checkType(actionInputData).equals(Constants.VIEW)) {
                 return command.doView(userInputData, actionInputData);
@@ -34,9 +28,18 @@ public class Action {
                 return command.doFavorite(userInputData, actionInputData);
             }
             if (command.checkType(actionInputData).equals(Constants.RATING)) {
-                return command.doRating(userInputData, actionInputData);
+                return command.doRating(userInputData, actionInputData, input);
             }
         }
         return "Didnt do anything";
     }
+
+//    public String doQuery(ActionInputData actionInputData) {
+//        if(query.checkQuery(actionInputData)) {
+//            if(query.checkType(actionInputData).equals(Constants.AVERAGE)) {
+//                return query.Average();
+//            }
+//        }
+//    }
+
 }
