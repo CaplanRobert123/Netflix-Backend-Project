@@ -1,7 +1,12 @@
 package entertainment;
 
+import action.Action;
+import user.User;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Information about a season of a tv show
@@ -21,6 +26,8 @@ public final class Season {
      * List of ratings for each season
      */
     private List<Double> ratings;
+
+    private Map<String, Double> ratingList = new HashMap<>();
 
     public Season(final int currentSeason, final int duration) {
         this.currentSeason = currentSeason;
@@ -44,23 +51,44 @@ public final class Season {
         this.ratings = ratings;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Episode{"
-//                + "currentSeason="
-//                + currentSeason
-//                + ", duration="
-//                + duration
-//                + '}';
-//    }
+    public Map<String, Double> getRatingList() {
+        return ratingList;
+    }
+
+    public Double calcAverage(List<Double> ratings) {
+        Double average = 0.0;
+        if(ratings.size() == 0)
+            return average;
+        for (int i = 0; i < ratings.size(); i++) {
+            average += ratings.get(i);
+        }
+        average /= ratings.size();
+        return average;
+    }
+
+/*    @Override
+    public String toString() {
+        return "Episode{"
+                + "currentSeason="
+                + currentSeason
+                + ", duration="
+                + duration
+                + '}';
+    }*/
 
     @Override
     public String toString() {
         return "Season{" +
                 "currentSeason=" + currentSeason +
-                ", duration=" + duration +
                 ", ratings=" + ratings +
                 '}';
+    }
+
+    public boolean checkIfAlreadyRated(User user, Action action) {
+        if(user.checkIfViewed(user, action)) {
+            return !ratingList.containsKey(action.getUsername());
+        }
+        return false;
     }
 }
 

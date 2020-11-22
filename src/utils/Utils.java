@@ -1,14 +1,17 @@
 package utils;
 
+import action.Action;
 import actor.ActorsAwards;
 import common.Constants;
 import entertainment.Genre;
+import entertainment.Movie;
+import entertainment.Serial;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import user.User;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The class contains static methods that helps with parsing.
@@ -122,5 +125,64 @@ public final class Utils {
         }
 
         return mapVideos;
+    }
+
+    /**
+     * Sorts a HashMap by value
+     */
+    public static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap, final boolean order)
+    {
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
+
+        // Sorting the list based on values
+        list.sort((o1, o2) -> order ? o1.getValue().compareTo(o2.getValue()) == 0
+                ? o1.getKey().compareTo(o2.getKey())
+                : o1.getValue().compareTo(o2.getValue()) : o2.getValue().compareTo(o1.getValue()) == 0
+                ? o2.getKey().compareTo(o1.getKey())
+                : o2.getValue().compareTo(o1.getValue()));
+        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+
+    }
+
+    public static Map<String, Double> sortByValueForRatings(Map<String, Double> unsortMap, final boolean order)
+    {
+        List<Map.Entry<String, Double>> list = new LinkedList<>(unsortMap.entrySet());
+
+        // Sorting the list based on values
+        list.sort((o1, o2) -> order ? o1.getValue().compareTo(o2.getValue()) == 0
+                ? o1.getKey().compareTo(o2.getKey())
+                : o1.getValue().compareTo(o2.getValue()) : o2.getValue().compareTo(o1.getValue()) == 0
+                ? o2.getKey().compareTo(o1.getKey())
+                : o2.getValue().compareTo(o1.getValue()));
+        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+
+    }
+
+    public static boolean checkSortType(String sortType) {
+        if(sortType.equals("asc")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static Map<String, Integer> putVideosWhoRespectCondition(List<Movie> movieList, List<Serial> serialList, Action action) {
+        Map<String, Integer> listOfVideosWhoRespectCondition = new HashMap<>();
+        for (Movie movie : movieList) {
+            if (String.valueOf(movie.getYear()).equals(action.getFilters().get(0).get(0)) && movie.getGenres().contains(action.getFilters().get(1).get(0))) {
+                listOfVideosWhoRespectCondition.put(movie.getTitle(), 0);
+            }
+        }
+        for (Serial serial : serialList) {
+            if (String.valueOf(serial.getYear()).equals(action.getFilters().get(0).get(0)) && serial.getGenres().contains(action.getFilters().get(1).get(0))) {
+                listOfVideosWhoRespectCondition.put(serial.getTitle(), 0);
+            }
+        }
+        return listOfVideosWhoRespectCondition;
+    }
+
+    public static List<String> mapKeysToList(Map<String, Integer> map) {
+        Set<String> keySet = map.keySet();
+        return new ArrayList<>(keySet);
     }
 }

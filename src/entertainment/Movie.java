@@ -1,22 +1,37 @@
 package entertainment;
 
-import fileio.Input;
-import fileio.MovieInputData;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Movie {
+public final class Movie {
     private String title;
-    private Double average;
+    /**
+     * The year the movie was released
+     */
+    private int year;
+    /**
+     * Show casting
+     */
+    private ArrayList<String> cast;
+    /**
+     * Show genres
+     */
+    private ArrayList<String> genres;
+    /**
+     * Duration in minutes of a movie
+     */
+    private int duration;
+    /**
+     * List of ratings for each movie
+     */
     private List<Double> ratings = new ArrayList<>();
 
-    public Movie(String title) {
+    public Movie(String title, int year, ArrayList<String> cast, ArrayList<String> genres, int duration) {
         this.title = title;
-    }
-
-    public List<MovieInputData> getMoviesList(Input input) {
-        return input.getMovies();
+        this.year = year;
+        this.cast = cast;
+        this.genres = genres;
+        this.duration = duration;
     }
 
     public String getTitle() {
@@ -27,30 +42,63 @@ public class Movie {
         this.title = title;
     }
 
-    public Double getAverage() {
-        return average;
+    public int getYear() {
+        return year;
     }
 
-    public void setAverage(Double average) {
-        this.average = average;
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public ArrayList<String> getCast() {
+        return cast;
+    }
+
+    public void setCast(ArrayList<String> cast) {
+        this.cast = cast;
+    }
+
+    public ArrayList<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(ArrayList<String> genres) {
+        this.genres = genres;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public List<Double> getRatings() {
         return ratings;
     }
 
-    public void setRatings(List<Double> rating) {
-        this.ratings = rating;
+    public void setRatings(List<Double> ratings) {
+        this.ratings = ratings;
     }
 
-    public void addToMovieList(ArrayList<Movie> movieList) {
+    public Double calcAverage(List<Double> ratings) {
+        Double average = 0.0;
+        for (int i = 0; i < ratings.size(); i++) {
+            average += ratings.get(i);
+        }
+        if (average != 0) {
+            average /= ratings.size();
+        } else {
+            average = 0.0;
+        }
+        return average;
     }
 
     @Override
     public String toString() {
         return "Movie{" +
                 "title='" + title + '\'' +
-                ", average=" + average +
                 ", ratings=" + ratings +
                 '}';
     }
