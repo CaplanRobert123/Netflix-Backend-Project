@@ -192,7 +192,7 @@ public final class Main {
 
                 } else if (actionList.get(i).getCriteria().equals("favorite")) {
                     arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
-                            query.doFavorite(userList, movieList, serialList, actionList.get(i), actionList.get(i).getNumber())));
+                            query.doFavorite(userList, movieList, serialList, actionList.get(i), actionList.get(i).getNumber(), actionList.get(i).getSortType())));
 
                 } else if (actionList.get(i).getCriteria().equals("longest")) {
                     arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
@@ -212,19 +212,41 @@ public final class Main {
                             arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
                                     recommendation.doStandard(user, movieList, serialList)));
                         }
-                        if (actionList.get(i).getType().equals("best_unseen")) {
+                        else if (actionList.get(i).getType().equals("best_unseen")) {
                             arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
                                     recommendation.doBestUnseen(user, movieList, serialList)));
                         }
-                        if (actionList.get(i).getType().equals("standard")) {
-//                            arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
-//                                    recommendation.doStandard();
+                        else if (actionList.get(i).getType().equals("popular")) {
+                            if (user.getSubscriptionType().equals("BASIC")) {
+                                arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
+                                        "PopularRecommendation cannot be applied!"));
+                            } else {
+                                arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
+                                        recommendation.doPopular(user, movieList, serialList)));
+                            }
+                        }
+                        else if (actionList.get(i).getType().equals("favorite")) {
+                            if (user.getSubscriptionType().equals("BASIC")) {
+                                arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
+                                        "FavoriteRecommendation cannot be applied!"));
+                            } else {
+                                arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
+                                        recommendation.doFavorite(userList, movieList, serialList, user)));
+                            }
+                        }
+                        else if (actionList.get(i).getType().equals("search")) {
+                            if (user.getSubscriptionType().equals("BASIC")) {
+                                arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
+                                        "SearchRecommendation cannot be applied!"));
+                            } else {
+                                arrayResult.add(fileWriter.writeFile(actionList.get(i).getActionId(), "",
+                                        recommendation.doSearch(movieList, serialList, user, actionList.get(i))));
+                            }
                         }
                     }
                 }
             }
         }
-
         fileWriter.closeJSON(arrayResult);
     }
 }

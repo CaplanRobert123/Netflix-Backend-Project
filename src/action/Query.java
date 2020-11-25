@@ -110,21 +110,22 @@ public class Query {
         } else {
             queriedActors = Utils.sortByValue(queriedActors, false);
         }
-        List<Integer> queriedActorsValues = new ArrayList<>(queriedActors.values());
         List<String> queriedActorsKeys = new ArrayList<>(queriedActors.keySet());
         return "Query result: " + queriedActorsKeys.toString();
     }
 
     public String doFilterDescription(List<Actor> actorList, Action action, String sortType) {
         List<String> queriedActors = new ArrayList<>();
-        for (int i = 0; i < actorList.size(); i++) {
+        for (Actor actor : actorList) {
             int cnt = 0;
             for (int j = 0; j < action.getFilters().get(2).size(); j++) {
-                if (actorList.get(i).getCareerDescription().toLowerCase().contains(action.getFilters().get(2).get(j)))
+                boolean found = Arrays.asList(actor.getCareerDescription().toLowerCase().split("[ ,.-]")).contains(action.getFilters().get(2).get(j));
+                if (found) {
                     cnt++;
+                }
             }
-            if(cnt == action.getFilters().get(2).size())
-                queriedActors.add(actorList.get(i).getName());
+            if (cnt == action.getFilters().get(2).size())
+                queriedActors.add(actor.getName());
         }
         if(sortType.equals("asc")) {
             queriedActors.sort(Comparator.naturalOrder());
@@ -135,21 +136,25 @@ public class Query {
     }
 
     public String doRating(List<Movie> movieList, List<Serial> serialList, Action action, int n, String sortType) {
-        Map<String, Double> queriedVideos = new HashMap<>();
+//        Map<String, Double> queriedVideos = new HashMap<>();
+        Map<String, Double> queriedVideos = Utils.putVideosWhoRespectConditionDouble(movieList, serialList, action);
         List<String> listOfVideos = new ArrayList<>();
-        for (int i = 0; i < movieList.size(); i++) {
-
-            if (movieList.get(i).calcAverage(movieList.get(i).getRatings()) != 0 &&
-                    String.valueOf(movieList.get(i).getYear()).equals(action.getFilters().get(0).get(0)) &&
-                    movieList.get(i).getGenres().contains(action.getFilters().get(1).get(0))) {
-                queriedVideos.put(movieList.get(i).getTitle(), movieList.get(i).calcAverage(movieList.get(i).getRatings()));
+        if (action.getObjectType().equals("movies")) {
+            for (int i = 0; i < movieList.size(); i++) {
+                if (queriedVideos.containsKey(movieList.get(i).getTitle())) {
+                    if (movieList.get(i).calcAverage(movieList.get(i).getRatings()) != 0) {
+                        queriedVideos.put(movieList.get(i).getTitle(), movieList.get(i).calcAverage(movieList.get(i).getRatings()));
+                    }
+                }
             }
         }
-        for (int i = 0; i < serialList.size(); i++) {
-            if (serialList.get(i).calcAverage(serialList.get(i).getSeasons()) != 0 &&
-                    String.valueOf(serialList.get(i).getYear()).equals(action.getFilters().get(0).get(0)) &&
-                    serialList.get(i).getGenres().contains(action.getFilters().get(1).get(0))) {
-                queriedVideos.put(serialList.get(i).getTitle(), serialList.get(i).calcAverage(serialList.get(i).getSeasons()));
+        if (action.getObjectType().equals("shows")) {
+            for (int i = 0; i < serialList.size(); i++) {
+                if (queriedVideos.containsKey(serialList.get(i).getTitle())) {
+                    if (serialList.get(i).calcAverage(serialList.get(i).getSeasons()) != 0) {
+                        queriedVideos.put(serialList.get(i).getTitle(), serialList.get(i).calcAverage(serialList.get(i).getSeasons()));
+                    }
+                }
             }
         }
         if (Utils.checkSortType(sortType)) {
@@ -169,7 +174,7 @@ public class Query {
         }
     }
 
-    public String doFavorite(List<User> userList, List<Movie> movieList, List<Serial> serialList, Action action, int n) {
+    public String doFavorite(List<User> userList, List<Movie> movieList, List<Serial> serialList, Action action, int n, String sortType) {
         List<String> listOfVideos = new ArrayList<>();
         Map<String, Integer> queriedVideos = Utils.putVideosWhoRespectCondition(movieList, serialList, action);
         if (queriedVideos.size() == 0) {
@@ -184,7 +189,11 @@ public class Query {
                 }
             }
         }
-        queriedVideos = Utils.sortByValue(queriedVideos, false);
+        if(sortType.equals("asc")) {
+            queriedVideos = Utils.sortByValue(queriedVideos, true);
+        } else {
+            queriedVideos = Utils.sortByValue(queriedVideos, false);
+        }
         queriedVideos.values().removeIf(val -> 0 == val);
         Set<String> keySet = queriedVideos.keySet();
         ArrayList<String> listOfKeys = new ArrayList<>(keySet);
@@ -199,18 +208,21 @@ public class Query {
     }
 
     public String doLongest(List<Movie> movieList, List<Serial> serialList, Action action, int n, String sortType) {
-        Map<String, Integer> queriedVideos = new HashMap<>();
+//        Map<String, Integer> queriedVideos = new HashMap<>();
+        Map<String, Integer> queriedVideos = Utils.putVideosWhoRespectCondition(movieList, serialList, action);
         List<String> videosDuration = new ArrayList<>();
-        for (int i = 0; i < serialList.size(); i++) {
-            if (String.valueOf(serialList.get(i).getYear()).equals(action.getFilters().get(0).get(0)) &&
-                    serialList.get(i).getGenres().contains(action.getFilters().get(1).get(0))) {
-                queriedVideos.put(serialList.get(i).getTitle(), serialList.get(i).serialDuration(serialList.get(i).getSeasons()));
+        if (action.getObjectType().equals("movies")) {
+            for (int i = 0; i < movieList.size(); i++) {
+                if (queriedVideos.containsKey(movieList.get(i).getTitle())) {
+                    queriedVideos.put(movieList.get(i).getTitle(), movieList.get(i).getDuration());
+                }
             }
         }
-        for (int i = 0; i < movieList.size(); i++) {
-            if (String.valueOf(movieList.get(i).getYear()).equals(action.getFilters().get(0).get(0)) &&
-                    movieList.get(i).getGenres().contains(action.getFilters().get(1).get(0))) {
-                queriedVideos.put(movieList.get(i).getTitle(), movieList.get(i).getDuration());
+        if (action.getObjectType().equals("shows")) {
+            for (int i = 0; i < serialList.size(); i++) {
+                if (queriedVideos.containsKey(serialList.get(i).getTitle())) {
+                    queriedVideos.put(serialList.get(i).getTitle(), serialList.get(i).serialDuration(serialList.get(i).getSeasons()));
+                }
             }
         }
         if(sortType.equals("asc")) {

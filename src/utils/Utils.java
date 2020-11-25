@@ -137,10 +137,12 @@ public final class Utils {
         // Sorting the list based on values
         list.sort((o1, o2) -> order ? o1.getValue().compareTo(o2.getValue()) == 0
                 ? o1.getKey().compareTo(o2.getKey())
-                : o1.getValue().compareTo(o2.getValue()) : o2.getValue().compareTo(o1.getValue()) == 0
+                : o1.getValue().compareTo(o2.getValue())
+                : o2.getValue().compareTo(o1.getValue()) == 0
                 ? o2.getKey().compareTo(o1.getKey())
                 : o2.getValue().compareTo(o1.getValue()));
-        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+        return list.stream().collect(Collectors.toMap(Map.Entry::getKey,
+                Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
 
     }
 
@@ -151,10 +153,12 @@ public final class Utils {
         // Sorting the list based on values
         list.sort((o1, o2) -> order ? o1.getValue().compareTo(o2.getValue()) == 0
                 ? o1.getKey().compareTo(o2.getKey())
-                : o1.getValue().compareTo(o2.getValue()) : o2.getValue().compareTo(o1.getValue()) == 0
+                : o1.getValue().compareTo(o2.getValue())
+                : o2.getValue().compareTo(o1.getValue()) == 0
                 ? o2.getKey().compareTo(o1.getKey())
                 : o2.getValue().compareTo(o1.getValue()));
-        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+        return list.stream().collect(Collectors.toMap(Map.Entry::getKey,
+                Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
 
     }
 
@@ -168,14 +172,109 @@ public final class Utils {
 
     public static Map<String, Integer> putVideosWhoRespectCondition(List<Movie> movieList, List<Serial> serialList, Action action) {
         Map<String, Integer> listOfVideosWhoRespectCondition = new HashMap<>();
-        for (Movie movie : movieList) {
-            if (String.valueOf(movie.getYear()).equals(action.getFilters().get(0).get(0)) && movie.getGenres().contains(action.getFilters().get(1).get(0))) {
-                listOfVideosWhoRespectCondition.put(movie.getTitle(), 0);
+        if (action.getObjectType().equals("movies")) {
+            for (Movie movie : movieList) {
+                if (action.getFilters().get(0).get(0) != null) {
+                    if (String.valueOf(movie.getYear()).equals(action.getFilters().get(0).get(0))) {
+                        if (action.getFilters().get(1).get(0) != null) {
+                            if (movie.getGenres().contains(action.getFilters().get(1).get(0))) {
+                                listOfVideosWhoRespectCondition.put(movie.getTitle(), 0);
+                            }
+                        } else {
+                            listOfVideosWhoRespectCondition.put(movie.getTitle(), 0);
+                        }
+                    }
+                } else if (action.getFilters().get(1).get(0) != null) {
+                    if (movie.getGenres().contains(action.getFilters().get(1).get(0))) {
+                        listOfVideosWhoRespectCondition.put(movie.getTitle(), 0);
+                    }
+                } else {
+                    listOfVideosWhoRespectCondition.put(movie.getTitle(), 0);
+                }
             }
         }
-        for (Serial serial : serialList) {
-            if (String.valueOf(serial.getYear()).equals(action.getFilters().get(0).get(0)) && serial.getGenres().contains(action.getFilters().get(1).get(0))) {
-                listOfVideosWhoRespectCondition.put(serial.getTitle(), 0);
+        if (action.getObjectType().equals("shows")) {
+            for (Serial serial : serialList) {
+                if (action.getFilters().get(0).get(0) != null) {
+                    if (String.valueOf(serial.getYear()).equals(action.getFilters().get(0).get(0))) {
+                        if (action.getFilters().get(1).get(0) != null) {
+                            if (serial.getGenres().contains(action.getFilters().get(1).get(0))) {
+                                listOfVideosWhoRespectCondition.put(serial.getTitle(), 0);
+                            }
+                        } else {
+                            listOfVideosWhoRespectCondition.put(serial.getTitle(), 0);
+                        }
+                    }
+                } else if (action.getFilters().get(1).get(0) != null) {
+                    if (serial.getGenres().contains(action.getFilters().get(1).get(0))) {
+                        listOfVideosWhoRespectCondition.put(serial.getTitle(), 0);
+                    }
+                } else {
+                    listOfVideosWhoRespectCondition.put(serial.getTitle(), 0);
+                }
+            }
+        }
+        return listOfVideosWhoRespectCondition;
+    }
+
+    public static Map<String, Double> putVideosWhoRespectConditionDouble(List<Movie> movieList, List<Serial> serialList, Action action) {
+        Map<String, Double> listOfVideosWhoRespectCondition = new HashMap<>();
+        if (action.getObjectType().equals("movies")) {
+            for (Movie movie : movieList) {
+                if (action.getFilters().get(0).get(0) != null) {
+                    if (String.valueOf(movie.getYear()).equals(action.getFilters().get(0).get(0))) {
+                        if (action.getFilters().get(1).get(0) != null) {
+                            if (movie.getGenres().contains(action.getFilters().get(1).get(0))) {
+                                if (movie.calcAverage(movie.getRatings()) != 0) {
+                                    listOfVideosWhoRespectCondition.put(movie.getTitle(), 0.0);
+                                }
+                            }
+                        } else {
+                            if (movie.calcAverage(movie.getRatings()) != 0) {
+                                listOfVideosWhoRespectCondition.put(movie.getTitle(), 0.0);
+                            }
+                        }
+                    }
+                } else if (action.getFilters().get(1).get(0) != null) {
+                    if (movie.getGenres().contains(action.getFilters().get(1).get(0))) {
+                        if (movie.calcAverage(movie.getRatings()) != 0) {
+                            listOfVideosWhoRespectCondition.put(movie.getTitle(), 0.0);
+                        }
+                    }
+                } else {
+                    if (movie.calcAverage(movie.getRatings()) != 0) {
+                        listOfVideosWhoRespectCondition.put(movie.getTitle(), 0.0);
+                    }
+                }
+            }
+        }
+        if (action.getObjectType().equals("shows")) {
+            for (Serial serial : serialList) {
+                if (action.getFilters().get(0).get(0) != null) {
+                    if (String.valueOf(serial.getYear()).equals(action.getFilters().get(0).get(0))) {
+                        if (action.getFilters().get(1).get(0) != null) {
+                            if (serial.getGenres().contains(action.getFilters().get(1).get(0))) {
+                                if (serial.calcAverage(serial.getSeasons()) != 0) {
+                                    listOfVideosWhoRespectCondition.put(serial.getTitle(), 0.0);
+                                }
+                            }
+                        } else {
+                            if (serial.calcAverage(serial.getSeasons()) != 0) {
+                                listOfVideosWhoRespectCondition.put(serial.getTitle(), 0.0);
+                            }
+                        }
+                    }
+                } else if (action.getFilters().get(1).get(0) != null) {
+                    if (serial.getGenres().contains(action.getFilters().get(1).get(0))) {
+                        if (serial.calcAverage(serial.getSeasons()) != 0) {
+                            listOfVideosWhoRespectCondition.put(serial.getTitle(), 0.0);
+                        }
+                    }
+                } else {
+                    if (serial.calcAverage(serial.getSeasons()) != 0) {
+                        listOfVideosWhoRespectCondition.put(serial.getTitle(), 0.0);
+                    }
+                }
             }
         }
         return listOfVideosWhoRespectCondition;
@@ -184,5 +283,34 @@ public final class Utils {
     public static List<String> mapKeysToList(Map<String, Integer> map) {
         Set<String> keySet = map.keySet();
         return new ArrayList<>(keySet);
+    }
+
+    public static List<String> mostPopularGenre(List<Movie> movieList, List<Serial> serialList) {
+        Map<String, Integer> genrePopularity = new HashMap<>();
+        for (Movie movie : movieList) {
+            for (int j = 0; j < movie.getGenres().size(); j++) {
+                if (genrePopularity.containsKey(movie.getGenres().get(j))) {
+                    int popularity = genrePopularity.get(movie.getGenres().get(j));
+                    popularity++;
+                    genrePopularity.replace(movie.getGenres().get(j), popularity);
+                } else {
+                    genrePopularity.put(movie.getGenres().get(j), 1);
+                }
+            }
+        }
+        for (Serial serial : serialList) {
+            for (int j = 0; j < serial.getGenres().size(); j++) {
+                if (genrePopularity.containsKey(serial.getGenres().get(j))) {
+                    int popularity = genrePopularity.get(serial.getGenres().get(j));
+                    popularity++;
+                    genrePopularity.replace(serial.getGenres().get(j), popularity);
+                } else {
+                    genrePopularity.put(serial.getGenres().get(j), 1);
+                }
+            }
+        }
+        genrePopularity = sortByValue(genrePopularity, false);
+        List<String> popularGenres = mapKeysToList(genrePopularity);
+        return popularGenres;
     }
 }
