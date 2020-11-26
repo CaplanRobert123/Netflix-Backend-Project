@@ -21,13 +21,13 @@ public final class Season {
     /**
      * Duration in minutes of a season
      */
-    private int duration;
+    private final int duration;
     /**
      * List of ratings for each season
      */
-    private List<Double> ratings;
+    private final List<Double> ratings;
 
-    private Map<String, Double> ratingList = new HashMap<>();
+    private final Map<String, Double> ratingList = new HashMap<>();
 
     public Season(final int currentSeason, final int duration) {
         this.currentSeason = currentSeason;
@@ -39,53 +39,41 @@ public final class Season {
         return duration;
     }
 
-    public void setDuration(final int duration) {
-        this.duration = duration;
-    }
-
     public List<Double> getRatings() {
         return ratings;
-    }
-
-    public void setRatings(final List<Double> ratings) {
-        this.ratings = ratings;
     }
 
     public Map<String, Double> getRatingList() {
         return ratingList;
     }
-
-    public Double calcAverage(List<Double> ratings) {
+    /**
+     * List of ratings for each movie
+     */
+    public Double calcAverage(final List<Double> ratings) {
         Double average = 0.0;
-        if(ratings.size() == 0)
+        if (ratings.size() == 0) {
             return average;
-        for (int i = 0; i < ratings.size(); i++) {
-            average += ratings.get(i);
+        }
+        for (Double rating : ratings) {
+            average += rating;
         }
         average /= ratings.size();
         return average;
     }
-
-/*    @Override
-    public String toString() {
-        return "Episode{"
-                + "currentSeason="
-                + currentSeason
-                + ", duration="
-                + duration
-                + '}';
-    }*/
-
+    /**
+     * List of ratings for each movie
+     */
     @Override
     public String toString() {
-        return "Season{" +
-                "currentSeason=" + currentSeason +
-                ", ratings=" + ratings +
-                '}';
+        return "Season{"
+                + "currentSeason=" + currentSeason
+                + ", ratings=" + ratings + '}';
     }
-
-    public boolean checkIfAlreadyRated(User user, Action action) {
-        if(user.checkIfViewed(user, action)) {
+    /**
+     * List of ratings for each movie
+     */
+    public boolean checkIfAlreadyRated(final User user, final Action action) {
+        if (user.checkIfViewed(user, action)) {
             return !ratingList.containsKey(action.getUsername());
         }
         return false;

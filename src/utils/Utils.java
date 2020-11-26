@@ -8,14 +8,13 @@ import entertainment.Movie;
 import entertainment.Serial;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import user.User;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * The class contains static methods that helps with parsing.
- *
+ * <p>
  * We suggest you add your static methods here or in a similar class.
  */
 public final class Utils {
@@ -27,6 +26,7 @@ public final class Utils {
 
     /**
      * Transforms a string into an enum
+     *
      * @param genre of video
      * @return an Genre Enum
      */
@@ -58,6 +58,7 @@ public final class Utils {
 
     /**
      * Transforms a string into an enum
+     *
      * @param award for actors
      * @return an ActorsAwards Enum
      */
@@ -74,6 +75,7 @@ public final class Utils {
 
     /**
      * Transforms an array of JSON's into an array of strings
+     *
      * @param array of JSONs
      * @return a list of strings
      */
@@ -91,6 +93,7 @@ public final class Utils {
 
     /**
      * Transforms an array of JSON's into a map
+     *
      * @param jsonActors array of JSONs
      * @return a map with ActorsAwardsa as key and Integer as value
      */
@@ -108,6 +111,7 @@ public final class Utils {
 
     /**
      * Transforms an array of JSON's into a map
+     *
      * @param movies array of JSONs
      * @return a map with String as key and Integer as value
      */
@@ -130,8 +134,8 @@ public final class Utils {
     /**
      * Sorts a HashMap by value
      */
-    public static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap, final boolean order)
-    {
+    public static Map<String, Integer> sortByValue(final Map<String,
+            Integer> unsortMap, final boolean order) {
         List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
 
         // Sorting the list based on values
@@ -145,9 +149,11 @@ public final class Utils {
                 Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
 
     }
-
-    public static Map<String, Double> sortByValueForRatings(Map<String, Double> unsortMap, final boolean order)
-    {
+    /**
+     * Checks if the movie is already in the user's favorite list
+     */
+    public static Map<String, Double> sortByValueForRatings(final Map<String,
+            Double> unsortMap, final boolean order) {
         List<Map.Entry<String, Double>> list = new LinkedList<>(unsortMap.entrySet());
 
         // Sorting the list based on values
@@ -161,16 +167,18 @@ public final class Utils {
                 Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
 
     }
-
-    public static boolean checkSortType(String sortType) {
-        if(sortType.equals("asc")) {
-            return true;
-        } else {
-            return false;
-        }
+    /**
+     * Checks if the movie is already in the user's favorite list
+     */
+    public static boolean checkSortType(final String sortType) {
+        return sortType.equals("asc");
     }
-
-    public static Map<String, Integer> putVideosWhoRespectCondition(List<Movie> movieList, List<Serial> serialList, Action action) {
+    /**
+     * Checks if the movie is already in the user's favorite list
+     */
+    public static Map<String, Integer> putVideosWhoRespectCondition(final List<Movie> movieList,
+                                                                    final List<Serial> serialList,
+                                                                    final Action action) {
         Map<String, Integer> listOfVideosWhoRespectCondition = new HashMap<>();
         if (action.getObjectType().equals("movies")) {
             for (Movie movie : movieList) {
@@ -196,7 +204,8 @@ public final class Utils {
         if (action.getObjectType().equals("shows")) {
             for (Serial serial : serialList) {
                 if (action.getFilters().get(0).get(0) != null) {
-                    if (String.valueOf(serial.getYear()).equals(action.getFilters().get(0).get(0))) {
+                    if (String.valueOf(serial.getYear()).equals(action
+                            .getFilters().get(0).get(0))) {
                         if (action.getFilters().get(1).get(0) != null) {
                             if (serial.getGenres().contains(action.getFilters().get(1).get(0))) {
                                 listOfVideosWhoRespectCondition.put(serial.getTitle(), 0);
@@ -216,8 +225,12 @@ public final class Utils {
         }
         return listOfVideosWhoRespectCondition;
     }
-
-    public static Map<String, Double> putVideosWhoRespectConditionDouble(List<Movie> movieList, List<Serial> serialList, Action action) {
+    /**
+     * Checks if the movie is already in the user's favorite list
+     */
+    public static Map<String, Double> putVideosWhoRespectConditionDouble(final List<Movie> movieList,
+                                                                         final List<Serial> serialList,
+                                                                         final Action action) {
         Map<String, Double> listOfVideosWhoRespectCondition = new HashMap<>();
         if (action.getObjectType().equals("movies")) {
             for (Movie movie : movieList) {
@@ -251,7 +264,8 @@ public final class Utils {
         if (action.getObjectType().equals("shows")) {
             for (Serial serial : serialList) {
                 if (action.getFilters().get(0).get(0) != null) {
-                    if (String.valueOf(serial.getYear()).equals(action.getFilters().get(0).get(0))) {
+                    if (String.valueOf(serial.getYear()).equals(action
+                            .getFilters().get(0).get(0))) {
                         if (action.getFilters().get(1).get(0) != null) {
                             if (serial.getGenres().contains(action.getFilters().get(1).get(0))) {
                                 if (serial.calcAverage(serial.getSeasons()) != 0) {
@@ -279,13 +293,18 @@ public final class Utils {
         }
         return listOfVideosWhoRespectCondition;
     }
-
-    public static List<String> mapKeysToList(Map<String, Integer> map) {
+    /**
+     * Checks if the movie is already in the user's favorite list
+     */
+    public static List<String> mapKeysToList(final Map<String, Integer> map) {
         Set<String> keySet = map.keySet();
         return new ArrayList<>(keySet);
     }
-
-    public static List<String> mostPopularGenre(List<Movie> movieList, List<Serial> serialList) {
+    /**
+     * Checks if the movie is already in the user's favorite list
+     */
+    public static List<String> mostPopularGenre(final List<Movie> movieList,
+                                                final List<Serial> serialList) {
         Map<String, Integer> genrePopularity = new HashMap<>();
         for (Movie movie : movieList) {
             for (int j = 0; j < movie.getGenres().size(); j++) {

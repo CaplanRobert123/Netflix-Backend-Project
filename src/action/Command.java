@@ -11,7 +11,7 @@ public class Command {
     /**
      * Implements the "view" command of an action.
      */
-    public String doView(User user, Action action) {
+    public String doView(final User user, final Action action) {
         Map<String, Integer> map = user.getHistory();
         int nrOfViews;
         if (user.checkIfViewed(user, action)) {
@@ -27,9 +27,9 @@ public class Command {
     /**
      * Implements the "favorite" command of an action.
      */
-    public String doFavorite(User user, Action action) {
+    public String doFavorite(final User user, final Action action) {
         if (user.checkIfViewed(user, action)) {
-            if(user.checkIfFavorite(user, action)) {
+            if (user.checkIfFavorite(user, action)) {
                 return "error -> " + action.getTitle() + " is already in favourite list";
             } else {
                 user.getFavoriteMovies().add(action.getTitle());
@@ -42,18 +42,20 @@ public class Command {
     /**
      * Implements the "rating" command of an action.
      */
-    public String doRating(User user, Action action, List<Movie> movieList, List<Serial> serialList) {
+    public String doRating(final User user, final Action action,
+                           final List<Movie> movieList, final List<Serial> serialList) {
         if (!user.checkIfViewed(user, action)) {
             return "error -> " + action.getTitle() + " is not seen";
         }
-        if(action.getSeasonNumber() != 0) {
+        if (action.getSeasonNumber() != 0) {
             for (Serial serial : serialList) {
                 if (serial.getTitle().equals(action.getTitle())) {
                     for (int j = 0; j < serial.getNumberOfSeasons(); j++) {
                         if (j + 1 == action.getSeasonNumber()) {
                             if (serial.getSeasons().get(j).checkIfAlreadyRated(user, action)) {
                                 serial.getSeasons().get(j).getRatings().add(action.getGrade());
-                                serial.getSeasons().get(j).getRatingList().put(action.getUsername(), action.getGrade());
+                                serial.getSeasons().get(j).getRatingList().put(action.getUsername(),
+                                        action.getGrade());
                             } else {
                                 return "error -> " + action.getTitle() + " has been already rated";
                             }
@@ -61,8 +63,7 @@ public class Command {
                     }
                 }
             }
-        }
-        else {
+        } else {
             if (user.checkIfAlreadyRated(user, action)) {
                 for (Movie movie : movieList) {
                     if (movie.getTitle().equals(action.getTitle())) {
@@ -75,7 +76,7 @@ public class Command {
             }
         }
         user.setNumberOfRatings(user.getNumberOfRatings() + 1);
-        return "success -> " + action.getTitle() + " was rated with " +
-                action.getGrade() + " by " + action.getUsername();
+        return "success -> " + action.getTitle() + " was rated with "
+                + action.getGrade() + " by " + action.getUsername();
     }
 }

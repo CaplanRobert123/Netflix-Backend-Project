@@ -5,59 +5,60 @@ import java.util.Collections;
 import java.util.List;
 
 public final class Action {
-    private int actionId;
+    private final int actionId;
     /**
      * Type of action
      */
-    private String actionType;
+    private final String actionType;
     /**
      * Used for commands
      */
-    private String type;
+    private final String type;
     /**
      * Username of user
      */
-    private String username;
+    private final String username;
     /**
      * The type of object on which the actions will be performed
      */
-    private String objectType;
+    private final String objectType;
     /**
      * Sorting type: ascending or descending
      */
-    private String sortType;
+    private final String sortType;
     /**
      * The criterion according to which the sorting will be performed
      */
-    private String criteria;
+    private final String criteria;
     /**
      * Video title
      */
-    private String title;
+    private final String title;
     /**
      * Video genre
      */
-    private String genre;
+    private final String genre;
     /**
      * Query limit
      */
-    private int number;
+    private final int number;
     /**
      * Grade for rating - aka value of the rating
      */
-    private double grade;
+    private final double grade;
     /**
      * Season number
      */
-    private int seasonNumber;
+    private final int seasonNumber;
     /**
      * Filters used for selecting videos
      */
-    private List<List<String>> filters = new ArrayList<>();
+    private final List<List<String>> filters = new ArrayList<>();
 
-    public Action(int actionId, String actionType, String type, String username,
-                  String objectType, String sortType, String criteria, String title,
-                  String genre, int number, double grade, int seasonNumber) {
+    public Action(final int actionId,  final String actionType,  final String type,
+                  final String username, final String objectType,  final String sortType,
+                  final String criteria,  final String title, final String genre,
+                  final int number, final double grade, final int seasonNumber) {
         this.actionId = actionId;
         this.actionType = actionType;
         this.type = type;

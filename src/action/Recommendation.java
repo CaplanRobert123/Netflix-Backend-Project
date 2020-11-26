@@ -9,19 +9,28 @@ import utils.Utils;
 import java.util.*;
 
 public class Recommendation {
-    public String doStandard(User user, List<Movie> movieList, List<Serial> serialList) {
+    /**
+     * for coding style
+     */
+    public String doStandard(final User user, final List<Movie> movieList,
+                             final List<Serial> serialList) {
         for (Movie movie : movieList) {
-            if (!user.getHistory().containsKey(movie.getTitle()))
+            if (!user.getHistory().containsKey(movie.getTitle())) {
                 return "StandardRecommendation result: " + movie.getTitle();
+            }
         }
         for (Serial serial : serialList) {
-            if (!user.getHistory().containsKey(serial.getTitle()))
+            if (!user.getHistory().containsKey(serial.getTitle())) {
                 return "StandardRecommendation result: " + serial.getTitle();
+            }
         }
         return "StandardRecommendation cannot be applied!";
     }
-
-    public String doBestUnseen(User user, List<Movie> movieList, List<Serial> serialList) {
+    /**
+     * for coding style
+     */
+    public String doBestUnseen(final User user, final List<Movie> movieList,
+                               final List<Serial> serialList) {
         String bestVideoTitle = "";
         double bestVideoGrade = -1.0;
         for (Movie movie : movieList) {
@@ -35,7 +44,8 @@ public class Recommendation {
         for (Serial serial : serialList) {
             if (!user.getHistory().containsKey(serial.getTitle())) {
                 if (!user.getHistory().containsKey(serial.getTitle())) {
-                    if (Double.compare(serial.calcAverage(serial.getSeasons()), bestVideoGrade) > 0) {
+                    if (Double.compare(serial.calcAverage(serial.getSeasons()),
+                            bestVideoGrade) > 0) {
                         bestVideoTitle = serial.getTitle();
                         bestVideoGrade = serial.calcAverage(serial.getSeasons());
                     }
@@ -47,22 +57,25 @@ public class Recommendation {
         }
         return "BestRatedUnseenRecommendation result: " + bestVideoTitle;
     }
-
-    public String doPopular(User user, List<Movie> movieList, List<Serial> serialList) {
+    /**
+     * for coding style
+     */
+    public String doPopular(final User user, final List<Movie> movieList,
+                            final List<Serial> serialList) {
         List<String> mostPopularGenre = Utils.mostPopularGenre(movieList, serialList);
         for (String s : mostPopularGenre) {
             for (Movie movie : movieList) {
                 for (int k = 0; k < movie.getGenres().size(); k++) {
-                    if (movie.getGenres().get(k).equals(s) &&
-                            !user.getHistory().containsKey(movie.getTitle())) {
+                    if (movie.getGenres().get(k).equals(s)
+                            && !user.getHistory().containsKey(movie.getTitle())) {
                         return "PopularRecommendation result: " + movie.getTitle();
                     }
                 }
             }
             for (int j = 0; j < serialList.size(); j++) {
                 for (int k = 0; k < serialList.get(j).getGenres().size(); k++) {
-                    if (serialList.get(j).getGenres().get(k).equals(mostPopularGenre.get(j)) &&
-                            !user.getHistory().containsKey(serialList.get(j).getTitle())) {
+                    if (serialList.get(j).getGenres().get(k).equals(mostPopularGenre.get(j))
+                            && !user.getHistory().containsKey(serialList.get(j).getTitle())) {
                         return "PopularRecommendation result: " + serialList.get(j).getTitle();
                     }
                 }
@@ -70,8 +83,11 @@ public class Recommendation {
         }
         return "PopularRecommendation cannot be applied!";
     }
-
-    public String doFavorite(List<User> userList, List<Movie> movieList, List<Serial> serialList, User user) {
+    /**
+     * for coding style
+     */
+    public String doFavorite(final List<User> userList, final List<Movie> movieList,
+                             final List<Serial> serialList, final User user) {
         Map<String, Integer> favoriteVideos = new HashMap<>();
         for (Movie movie : movieList) {
             int cnt = 0;
@@ -106,8 +122,11 @@ public class Recommendation {
         }
         return "FavoriteRecommendation result: " + video;
     }
-
-    public String doSearch(List<Movie> movieList, List<Serial> serialList, User user, Action action) {
+    /**
+     * for coding style
+     */
+    public String doSearch(final List<Movie> movieList, final List<Serial> serialList,
+                           final User user, final Action action) {
         List<Genre> genres = Arrays.asList(Genre.values());
         int check = 0;
         for (Genre genre : genres) {
@@ -120,15 +139,15 @@ public class Recommendation {
         }
         Map<String, Double> searchedVideos = new HashMap<>();
         for (Movie movie : movieList) {
-            if (!user.getHistory().containsKey(movie.getTitle()) &&
-                    movie.getGenres().contains(action.getGenre())) {
+            if (!user.getHistory().containsKey(movie.getTitle())
+                    && movie.getGenres().contains(action.getGenre())) {
                 searchedVideos.put(movie.getTitle(),
                         movie.calcAverage(movie.getRatings()));
             }
         }
         for (Serial serial : serialList) {
-            if (!user.getHistory().containsKey(serial.getTitle()) &&
-                    serial.getGenres().contains(action.getGenre())) {
+            if (!user.getHistory().containsKey(serial.getTitle())
+                    && serial.getGenres().contains(action.getGenre())) {
                 searchedVideos.put(serial.getTitle(),
                         serial.calcAverage(serial.getSeasons()));
             }
