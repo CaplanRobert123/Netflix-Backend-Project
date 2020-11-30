@@ -60,7 +60,7 @@ public final class Movie {
     }
 
     /**
-     * Sorts a HashMap by value
+     * A method to calculate the average grade for a movie
      */
     public Double calcAverage(final List<Double> ratings) {
         Double average = 0.0;
@@ -76,7 +76,7 @@ public final class Movie {
     }
 
     /**
-     * Sorts a HashMap by value
+     * toString
      */
     @Override
     public String toString() {

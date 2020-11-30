@@ -10,7 +10,10 @@ import java.util.*;
 
 public class Recommendation {
     /**
-     * for coding style
+     * Iterez prin listele de video-uri si returnez primul video nevazut de catre utilizator.
+     * @param user the user who asks for the recommendation
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
      */
     public String doStandard(final User user, final List<Movie> movieList,
                              final List<Serial> serialList) {
@@ -26,8 +29,14 @@ public class Recommendation {
         }
         return "StandardRecommendation cannot be applied!";
     }
+
     /**
-     * for coding style
+     * Gasesc primul video cu rating-ul cel mai mare retinand intr-o variabila nota iar in una
+     * titlul. Initializez variabila "bestVideoGrade" cu -1 deoarece in momentul in care gasesc un
+     * video cu o nota mai buna (inclusiv 0), actualizez nota si numele video-ului.
+     * @param user the user who asks for the recommendation
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
      */
     public String doBestUnseen(final User user, final List<Movie> movieList,
                                final List<Serial> serialList) {
@@ -57,8 +66,13 @@ public class Recommendation {
         }
         return "BestRatedUnseenRecommendation result: " + bestVideoTitle;
     }
+
     /**
-     * for coding style
+     * Adaug intr-o lista toate genurile in ordinea popularitatii cu ajutorul unei metode din Utils
+     * apoi returnez primul video nevazut de user din cel mai popular gen.
+     * @param user the user who asks for the recommendation
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
      */
     public String doPopular(final User user, final List<Movie> movieList,
                             final List<Serial> serialList) {
@@ -83,8 +97,15 @@ public class Recommendation {
         }
         return "PopularRecommendation cannot be applied!";
     }
+
     /**
-     * for coding style
+     * Parcurg listele de video-uri pentru a gasi video-ul cel mai favorit de catre useri. Pentru
+     * a face asta numar de cate ori apare la favorite fiecare video apoi il adaug in mapa
+     * "favoriteVideos" dupa care caut cel mai des intalnit video in lista de favorite din acea mapa
+     * si il returnez.
+     * @param user the user who asks for the recommendation
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
      */
     public String doFavorite(final List<User> userList, final List<Movie> movieList,
                              final List<Serial> serialList, final User user) {
@@ -122,12 +143,18 @@ public class Recommendation {
         }
         return "FavoriteRecommendation result: " + video;
     }
+
     /**
-     * for coding style
+     * Caut genre-ul primit ca filtru in input in lista de enum-uri "Genre" dupa care adaug intr-o
+     * mapa toate video-urile din acel gen. Sortez mapa dupa rating si o returnez.
+     * @param user the user who asks for the recommendation
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
+     * @param action for getting the genre to search for
      */
     public String doSearch(final List<Movie> movieList, final List<Serial> serialList,
                            final User user, final Action action) {
-        List<Genre> genres = Arrays.asList(Genre.values());
+        Genre[] genres = Genre.values();
         int check = 0;
         for (Genre genre : genres) {
             if (genre.equals(Utils.stringToGenre(action.getGenre()))) {

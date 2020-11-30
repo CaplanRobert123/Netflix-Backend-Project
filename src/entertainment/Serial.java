@@ -61,7 +61,7 @@ public final class Serial {
         return seasons;
     }
     /**
-     * List of ratings for each movie
+     * Calculates the average grade for the serial
      */
     public Double calcAverage(final List<Season> seasonList) {
         double average = 0.0;
@@ -76,7 +76,7 @@ public final class Serial {
         return average;
     }
     /**
-     * List of ratings for each movie
+     * Calculates the total duration of the whole serial
      */
     public int serialDuration(final List<Season> seasonList) {
         int sum = 0;
@@ -86,12 +86,12 @@ public final class Serial {
         return sum;
     }
     /**
-     * List of ratings for each movie
+     * toString
      */
     @Override
     public String toString() {
-        return "Serial{" +
-                "title='" + title + '\''
+        return "Serial{"
+                + "title='" + title + '\''
                 + ", seasons=" + seasons + '}';
     }
 }

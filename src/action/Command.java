@@ -9,7 +9,11 @@ import java.util.Map;
 
 public class Command {
     /**
-     * Implements the "view" command of an action.
+     * Caut in istoricul de vizionari al user-ului, daca video-ul cautat se afla in lista,
+     * incrementez numarul de vizionari al acelui video. Daca nu il gasesc in lista,
+     * il adaug cu numarul de vizionari 1
+     * @param user for modifying its history list
+     * @param action for getting the title of the video and checking if it has been seen already
      */
     public String doView(final User user, final Action action) {
         Map<String, Integer> map = user.getHistory();
@@ -25,7 +29,13 @@ public class Command {
     }
 
     /**
-     * Implements the "favorite" command of an action.
+     * Verific daca user-ul a vizionat video-ul in primul rand. Daca a fost vizionat,
+     * verific daca nu cumva se afla deja in lista de video-uri favorite.
+     * Daca nu se afla il adaug si returnez mesaj de succes, altfel returnez mesaj de eroare
+     * si nu fac nicio modificare asupra listei.
+     * @param user for modifying its favorite list
+     * @param action for getting the title of the video and checking if it is already in the
+     *               favorite list
      */
     public String doFavorite(final User user, final Action action) {
         if (user.checkIfViewed(user, action)) {
@@ -40,7 +50,17 @@ public class Command {
     }
 
     /**
-     * Implements the "rating" command of an action.
+     * Verific in primul rand daca a fost vazut video-ul. Dupa aceea, verific daca se da rating unui
+     * film sau unui serial. Daca se da rating unui serial, iterez prin lista de seriale pana il
+     * gasesc pe cel cautat, verific pentru ce sezon trebuie sa dau rating,verific sa nu fi dat deja
+     * rating pentru acel sezon si daca totul este ok, adaug in map-ul de ratings numele serialului
+     * si nota, si in lista de rating-uri a sezonului nota. Pentru filme procedez similar.
+     * De asemenea, incrementez numarul de rating-uri al utilizatorului pentru a-l folosi la Query.
+     * @param user for checking if he already rated a video and for adding to its number of ratings
+     *             in order to count his activity
+     * @param action for getting the required info (title, grade, season number, etc)
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
      */
     public String doRating(final User user, final Action action,
                            final List<Movie> movieList, final List<Serial> serialList) {

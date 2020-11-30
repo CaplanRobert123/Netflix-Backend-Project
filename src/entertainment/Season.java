@@ -47,7 +47,7 @@ public final class Season {
         return ratingList;
     }
     /**
-     * List of ratings for each movie
+     * A method to calculate the average grade for a season
      */
     public Double calcAverage(final List<Double> ratings) {
         Double average = 0.0;
@@ -61,7 +61,7 @@ public final class Season {
         return average;
     }
     /**
-     * List of ratings for each movie
+     * toString
      */
     @Override
     public String toString() {
@@ -70,7 +70,7 @@ public final class Season {
                 + ", ratings=" + ratings + '}';
     }
     /**
-     * List of ratings for each movie
+     * A method to check if the given user already rated the given video.
      */
     public boolean checkIfAlreadyRated(final User user, final Action action) {
         if (user.checkIfViewed(user, action)) {

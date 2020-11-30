@@ -46,14 +46,14 @@ public class Actor {
     }
 
     /**
-     * Sorts a HashMap by value
+     * Setter
      */
     public void setAverageGrade(double averageGrade) {
         this.averageGrade = averageGrade;
     }
 
     /**
-     * Sorts a HashMap by value
+     * A method to calculate the total awards for an actor
      */
     public int calcTotalAwards() {
         int totalAwards = 0;
@@ -63,8 +63,9 @@ public class Actor {
         }
         return totalAwards;
     }
+
     /**
-     * Sorts a HashMap by value
+     * toString
      */
     @Override
     public String toString() {

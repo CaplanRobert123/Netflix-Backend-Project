@@ -12,7 +12,14 @@ public class Query {
     private final int words = 3;
 
     /**
-     * for coding style
+     * Creez o mapa pentru actori si notele lor. Iterez prin lista de actori, le verific
+     * filmele/serialele in care au jucat, si cand gasesc un video in care au jucat, salvez nota
+     * acelui video in mapa. Elimin video-urile fara rating, sortez mapa, si o transform intr-o
+     * lista pentru a returna primele "n" elemente.
+     * @param actorList for iterating trough the list of actors and calculating the average grade
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
+     * @param sortType for getting the specified sort type from action
      */
     public String doAverage(final List<Actor> actorList, final List<Movie> movieList,
                             final List<Serial> serialList, final int n, final String sortType) {
@@ -71,35 +78,12 @@ public class Query {
     }
 
     /**
-     * for coding style
-     */
-    public String doNumRatings(final List<User> userList, final double n, final String sortType) {
-        Map<String, Integer> userRatings = new HashMap<>();
-        List<String> queriedUsers = new ArrayList<>();
-        for (User user : userList) {
-            if (user.getNumberOfRatings() != 0) {
-                userRatings.put(user.getUsername(), user.getNumberOfRatings());
-            }
-        }
-        if (sortType.equals("asc")) {
-            userRatings = Utils.sortByValue(userRatings, true);
-        } else {
-            userRatings = Utils.sortByValue(userRatings, false);
-        }
-        Set<String> keySet = userRatings.keySet();
-        ArrayList<String> listOfKeys = new ArrayList<>(keySet);
-        if (n > listOfKeys.size()) {
-            queriedUsers = listOfKeys;
-        } else {
-            for (int i = 0; i < n; i++) {
-                queriedUsers.add(listOfKeys.get(i));
-            }
-        }
-        return "Query result: " + queriedUsers.toString();
-    }
-
-    /**
-     * for coding style
+     * Iterez prin lista de actori si verific daca actorul are toate award-urile cerute. Daca da,
+     * il adaug in mapa alaturi de numarul total de award-uri pe care le are, sortez mapa si
+     * returnez o lista sortata.
+     * @param actorList for checking if he has the specified awards
+     * @param action for getting the required filters info
+     * @param sortType for getting the specified sort type from action
      */
     public String doAwards(final List<Actor> actorList, final Action action,
                            final String sortType) {
@@ -126,7 +110,12 @@ public class Query {
     }
 
     /**
-     * for coding style
+     * Iterez prin lista de actori iar pentru fiecare actor iterez prin lista de cuvinte primite si
+     * verific daca se afla cuvantul cautat in descriere. Daca se afla toate cuvintele, sortez lista
+     * si o returnez.
+     * @param actorList for checking its description
+     * @param action for getting the required filters info
+     * @param sortType for getting the specified sort type from action
      */
     public String doFilterDescription(final List<Actor> actorList, final Action action,
                                       final String sortType) {
@@ -153,7 +142,14 @@ public class Query {
     }
 
     /**
-     * for coding style
+     * Incarc in mapa "queriedVideos" toate video-urile care respecta filtrele primite, cu ajutorul
+     * functiei din Utils apoi adaug si media rating-ului pentru fiecare. Sortez lista si returnez
+     * primele "n" video-uri.
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
+     * @param action for getting the required filters info
+     * @param n for getting the first "n" videos
+     * @param sortType for getting the specified sort type from action
      */
     public String doRating(final List<Movie> movieList, final List<Serial> serialList,
                            final Action action, final int n, final String sortType) {
@@ -180,7 +176,7 @@ public class Query {
                 }
             }
         }
-        if (Utils.checkSortType(sortType)) {
+        if (sortType.equals("asc")) {
             queriedVideos = Utils.sortByValueForRatings(queriedVideos, true);
         } else {
             queriedVideos = Utils.sortByValueForRatings(queriedVideos, false);
@@ -198,7 +194,15 @@ public class Query {
     }
 
     /**
-     * for coding style
+     * Incarc in mapa "queriedVideos" toate video-urile care respecta filtrele primite, cu ajutorul
+     * functiei din Utils apoi calculez numarul de aparitii in listele de favorite ale
+     * utilizatorilor. Sortez lista si returnez primele "n" video-uri.
+     * @param userList for searching in their favorite list
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
+     * @param action for getting the required filters info
+     * @param n for getting the first "n" videos
+     * @param sortType for getting the specified sort type from action
      */
     public String doFavorite(final List<User> userList, final List<Movie> movieList,
                              final List<Serial> serialList, final Action action,
@@ -237,7 +241,14 @@ public class Query {
     }
 
     /**
-     * for coding style
+     * Incarc in mapa "queriedVideos" toate video-urile care respecta filtrele primite, cu ajutorul
+     * functiei din Utils apoi adaug durata fiecaruia. Sortez lista si returnez primele "n"
+     * video-uri.
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
+     * @param action for getting the required filters info
+     * @param n for getting the first "n" videos
+     * @param sortType for getting the specified sort type from action
      */
     public String doLongest(final List<Movie> movieList, final List<Serial> serialList,
                             final Action action, final int n, final String sortType) {
@@ -277,7 +288,15 @@ public class Query {
     }
 
     /**
-     * for coding style
+     * Incarc in mapa "queriedVideos" toate video-urile care respecta filtrele primite, cu ajutorul
+     * functiei din Utils apoi calculez numarul de vizualizari al fiecarui video si il adaug in
+     * mapa. Sortez lista si returnez primele "n" video-uri.
+     * @param userList for counting the number of times he saw a video
+     * @param movieList for iterating trough the list of movies
+     * @param serialList for iterating trough the list of serials
+     * @param action for getting the required filters info
+     * @param n for getting the first "n" videos
+     * @param sortType for getting the specified sort type from action
      */
     public String doMostViewed(final List<User> userList, final List<Movie> movieList,
                                final List<Serial> serialList, final Action action,
@@ -321,5 +340,37 @@ public class Query {
             }
             return "Query result: " + listOfVideos.toString();
         }
+    }
+
+    /**
+     * Calculez numarul de rating-uri date de fiecare utilizator, sortez lista si returnez primii
+     * "n" utilizatori.
+     * @param userList for counting the number of times he rated a video
+     * @param n for getting the first "n" videos
+     * @param sortType for getting the specified sort type from action
+     */
+    public String doNumRatings(final List<User> userList, final double n, final String sortType) {
+        Map<String, Integer> userRatings = new HashMap<>();
+        List<String> queriedUsers = new ArrayList<>();
+        for (User user : userList) {
+            if (user.getNumberOfRatings() != 0) {
+                userRatings.put(user.getUsername(), user.getNumberOfRatings());
+            }
+        }
+        if (sortType.equals("asc")) {
+            userRatings = Utils.sortByValue(userRatings, true);
+        } else {
+            userRatings = Utils.sortByValue(userRatings, false);
+        }
+        Set<String> keySet = userRatings.keySet();
+        ArrayList<String> listOfKeys = new ArrayList<>(keySet);
+        if (n > listOfKeys.size()) {
+            queriedUsers = listOfKeys;
+        } else {
+            for (int i = 0; i < n; i++) {
+                queriedUsers.add(listOfKeys.get(i));
+            }
+        }
+        return "Query result: " + queriedUsers.toString();
     }
 }

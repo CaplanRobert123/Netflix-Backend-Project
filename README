@@ -1,41 +1,19 @@
-Object Oriented Programming Course
-Homework - VideosDB
+CAPLAN ROBERT STEFAN, 321CD
+TEMA 1 - POO
 
-November 2020
+Ideea este sa incarc din baza de date toti actorii, userii, filmele, etc si sa execut anumite
+actiuni asupra acestora. Pentru fiecare tip de actiune am creat cate o metoda care sa execute ce se
+cere. De asemenea, am avut nevoie de clase noi pentru fiecare element care trebuia modificat/folosit
+si am creat cate o clasa noua pentru fiecare in parte. Pentru elementele care trebuiau incarcate din
+baza de date am creat in main cate o lista in care am adaugat pe rand fiecare obiect folosindu-ma
+de constructori. Dupa ce termin de incarcat, parcurg lista de actiuni si verific ce tip de actiune
+este. Pentru actiunile de tip comanda:
 
-# Info
-https://ocw.cs.pub.ro/courses/poo-ca-cd/teme/tema
+Acestea sunt date asupra unor useri, asa ca parcurg si lista de useri pana gasesc user-ul asupra
+caruia trebuie sa faca modificari comanda. In functie de comanda data, o apelez in main. Mai multe
+detalii despre modul de implementare al actiunilor se poate gasi in java doc-ul metodei.
 
-# About the code
-
-We provide the input tests, the logic that parses them and the checker that runs them.
-
-* test_db - contains the tests in JSON format
-* src
-   * checker - the checker's sources including the checkstyle necessary files, not to be modified
-   * fileio - classes for parsing the input files, not to be modified
-   * common, utils
-        * contain utility classes with constants and static methods
-        * you can add your own functionality in the existing classes or add new classes as well
-   * actor
-        * contains an enum for the types of awards an actor can have - do not modify it
-        * you can add here your actor related classes
-   * entertainment
-        * contains an enum for the supported video genres - do not modify it
-        * class for representing a Season of a tv show - do not modify it
-        * you can add here your entertainment related classes
-
-We encourage you to organize your implementation in packages based on the functionality their classes offer. Try to keep
-your code modular, readable and documented.
-
-# Testing
-
-The Main class runs the checker on your implementation. Add the entry point to your implementation in it.
-
-Run Main to test your implementation from the IDE or from command line.
-
-Run the main method from Test class with the name of the input file from the command line and the result will be written
-to the out.txt file. Thus, you can compare this result with ref.
-
-
-Will update this when I have new info.
+Pentru actiunile de tip query: pentru query ul Average: creez o mapa pentru actori si notele lor.
+Iterez prin lista de actori, le verific filmele/serialele in care au jucat, si cand gasesc un video
+in care au jucat, salvez nota acelui video in mapa. Elimin video urile fara rating, sortez mapa, si
+o transform intr o lista pentru a returna primele "n" elemente.

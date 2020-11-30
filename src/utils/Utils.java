@@ -108,7 +108,6 @@ public final class Utils {
 
         return awards;
     }
-
     /**
      * Transforms an array of JSON's into a map
      *
@@ -130,7 +129,6 @@ public final class Utils {
 
         return mapVideos;
     }
-
     /**
      * Sorts a HashMap by value
      */
@@ -138,7 +136,6 @@ public final class Utils {
             Integer> unsortMap, final boolean order) {
         List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
 
-        // Sorting the list based on values
         list.sort((o1, o2) -> order ? o1.getValue().compareTo(o2.getValue()) == 0
                 ? o1.getKey().compareTo(o2.getKey())
                 : o1.getValue().compareTo(o2.getValue())
@@ -150,13 +147,12 @@ public final class Utils {
 
     }
     /**
-     * Checks if the movie is already in the user's favorite list
+     * Sorts a HashMap by value but the values are Double so I can use it for ratings
      */
     public static Map<String, Double> sortByValueForRatings(final Map<String,
             Double> unsortMap, final boolean order) {
         List<Map.Entry<String, Double>> list = new LinkedList<>(unsortMap.entrySet());
 
-        // Sorting the list based on values
         list.sort((o1, o2) -> order ? o1.getValue().compareTo(o2.getValue()) == 0
                 ? o1.getKey().compareTo(o2.getKey())
                 : o1.getValue().compareTo(o2.getValue())
@@ -168,13 +164,7 @@ public final class Utils {
 
     }
     /**
-     * Checks if the movie is already in the user's favorite list
-     */
-    public static boolean checkSortType(final String sortType) {
-        return sortType.equals("asc");
-    }
-    /**
-     * Checks if the movie is already in the user's favorite list
+     * Puts all the videos that respect the given conditions in a map
      */
     public static Map<String, Integer> putVideosWhoRespectCondition(final List<Movie> movieList,
                                                                     final List<Serial> serialList,
@@ -226,7 +216,8 @@ public final class Utils {
         return listOfVideosWhoRespectCondition;
     }
     /**
-     * Checks if the movie is already in the user's favorite list
+     * Puts all the videos that respect the given conditions in a map but the values are Double for
+     * ratings.
      */
     public static Map<String, Double> putVideosWhoRespectConditionDouble(final List<Movie> movieList,
                                                                          final List<Serial> serialList,
@@ -294,14 +285,14 @@ public final class Utils {
         return listOfVideosWhoRespectCondition;
     }
     /**
-     * Checks if the movie is already in the user's favorite list
+     * Creates a list with the map's keys
      */
     public static List<String> mapKeysToList(final Map<String, Integer> map) {
         Set<String> keySet = map.keySet();
         return new ArrayList<>(keySet);
     }
     /**
-     * Checks if the movie is already in the user's favorite list
+     * Finds the most popular genre
      */
     public static List<String> mostPopularGenre(final List<Movie> movieList,
                                                 final List<Serial> serialList) {
@@ -329,7 +320,6 @@ public final class Utils {
             }
         }
         genrePopularity = sortByValue(genrePopularity, false);
-        List<String> popularGenres = mapKeysToList(genrePopularity);
-        return popularGenres;
+        return mapKeysToList(genrePopularity);
     }
 }
